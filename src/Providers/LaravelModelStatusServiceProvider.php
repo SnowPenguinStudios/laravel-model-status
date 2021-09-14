@@ -7,18 +7,16 @@ use Illuminate\Support\Str;
 
 class LaravelModelStatusServiceProvider extends \Illuminate\Support\ServiceProvider
 {
-    const PACKAGE = 'laravel-model-status';
+    public const PACKAGE = 'laravel-model-status';
 
     public function boot()
     {
-
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
         $this->publishMigrations();
     }
 
     public function register()
     {
-
         $this->mergeConfigFrom(__DIR__."/../../config/".$this::PACKAGE.".php", $this::PACKAGE);
     }
 
@@ -28,7 +26,7 @@ class LaravelModelStatusServiceProvider extends \Illuminate\Support\ServiceProvi
         $migrationsPath = 'migrations/';
 
         foreach (glob(__DIR__."/../../database/${migrationsPath}*.php.stub") as $filename) {
-            if (!$this->migrationFileExists($filename)) {
+            if (! $this->migrationFileExists($filename)) {
                 $this->createPublishEntry($filename, $now);
             }
         }
@@ -62,12 +60,11 @@ class LaravelModelStatusServiceProvider extends \Illuminate\Support\ServiceProvi
                 $migrationPath = 'migrations/';
 
                 if (Str::contains($migrationFileName, '/')) {
-                    $migrationFileName = Str::of($migrationFileName)->afterLast('/')->substr(0,-5);
+                    $migrationFileName = Str::of($migrationFileName)->afterLast('/')->substr(0, -5);
                 }
 
                 return database_path($migrationPath . $now->addSecond()->format('Y_m_d_His') . '_' . Str::of($migrationFileName)->snake()->finish('.php'));
             }),
         ], $this::PACKAGE."-migrations");
     }
-
 }

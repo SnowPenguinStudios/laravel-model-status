@@ -2,7 +2,6 @@
 
 namespace SnowPenguinStudios\LaravelModelStatus\Tests;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use SnowPenguinStudios\LaravelModelStatus\Models\Status;
 
 class StatusTest extends TestCase

@@ -27,14 +27,14 @@ class HasStatusTraitTest extends TestCase
             ->count(3)
             ->active()
             ->create([
-                'model' => DataModel::class
+                'model' => DataModel::class,
             ]);
 
         Status::factory()
             ->count(3)
             ->inactive()
             ->create([
-                'model' => DataModel::class
+                'model' => DataModel::class,
             ]);
 
         $this->assertEquals(3, $activeStatuses->count());
@@ -53,7 +53,7 @@ class HasStatusTraitTest extends TestCase
             ->count(3)
             ->active()
             ->create([
-                'model' => DataModel::class
+                'model' => DataModel::class,
             ]);
 
         $this->assertEquals(6, Status::all()->count());
@@ -155,5 +155,4 @@ class HasStatusTraitTest extends TestCase
 
         $this->assertEquals($status->id, $dataModel->latestStatusUpdate()->status_id);
     }
-
 }
