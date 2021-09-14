@@ -11,7 +11,6 @@ class StatusUpdate extends Model
 
     protected $fillable = ['model_type', 'model_id', 'status_id'];
 
-
     public static function boot()
     {
         parent::boot();

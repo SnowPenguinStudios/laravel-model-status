@@ -6,10 +6,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 use SnowPenguinStudios\LaravelModelStatus\Models\Status;
 use SnowPenguinStudios\LaravelModelStatus\Models\StatusUpdate;
-
 
 trait HasStatus
 {
@@ -54,11 +52,12 @@ trait HasStatus
     public static function bootHasStatus()
     {
         static::creating(function ($model) {
-            if (!$model->status_id) {
+            if (! $model->status_id) {
                 $defaultStatus = self::defaultStatus();
 
                 $model->status_id = $defaultStatus->id ?? null;
             }
+
             return $model;
         });
 
@@ -82,7 +81,7 @@ trait HasStatus
                 StatusUpdate::create([
                     'model_type' => self::class,
                     'model_id' => $model->id,
-                    'status_id'=> $model->status_id
+                    'status_id' => $model->status_id,
                 ]);
             }
         });

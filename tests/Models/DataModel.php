@@ -12,5 +12,4 @@ class DataModel extends Model
     protected $table = 'data_models';
 
     protected $fillable = ['name', 'status_id'];
-
 }
