@@ -16,7 +16,9 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'SnowPenguinStudios\\LaravelModelStatus\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            function (string $modelName) {
+                return 'SnowPenguinStudios\\LaravelModelStatus\\Database\\Factories\\' . class_basename($modelName) . 'Factory';
+            }
         );
 
         $this->migrateTables();
@@ -50,6 +52,9 @@ class TestCase extends Orchestra
 
         include_once __DIR__.'/../database/migrations/create_status_updates_table.php.stub';
         (new \CreateStatusUpdatesTable())->up();
+
+        include_once __DIR__.'/../database/migrations/add_order_to_statuses_table.php.stub';
+        (new \AddOrderToStatusesTable())->up();
     }
 
     protected function createTestTables()

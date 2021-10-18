@@ -3,6 +3,7 @@
 namespace SnowPenguinStudios\LaravelModelStatus\Tests;
 
 use SnowPenguinStudios\LaravelModelStatus\Models\Status;
+use SnowPenguinStudios\LaravelModelStatus\Models\StatusUpdate;
 use SnowPenguinStudios\LaravelModelStatus\Tests\Models\DataModel;
 
 class HasStatusTraitTest extends TestCase
@@ -154,5 +155,55 @@ class HasStatusTraitTest extends TestCase
         $dataModel->update(['status_id' => $status->id]);
 
         $this->assertEquals($status->id, $dataModel->latestStatusUpdate()->status_id);
+    }
+
+
+    /** @test */
+    public function will_default_sort_model_specific_available_statuses_by_id(): void
+    {
+        $dataModel = DataModel::create(['name' => 'Test Model']);
+        $statuses = StatusUpdate::factory()->count(2)->create(['model_type' => DataModel::class, 'model_id' => $dataModel->id]);
+
+        $this->assertEquals([1,2], $statuses->pluck('id')->toArray());
+    }
+
+    /** @test */
+    public function will_default_sort_model_specific_available_statuses_by_order_asc(): void
+    {
+        Status::factory()->create(['model' => DataModel::class, 'order'=> 1]);
+        Status::factory()->create(['model' => DataModel::class, 'order'=> 2]);
+        Status::factory()->create(['model' => DataModel::class, 'order'=> 0]);
+        Status::factory()->create(['order'=> 3]);
+
+        $this->assertEquals([3,1,2,4], DataModel::availableStatuses('asc')->pluck('id')->toArray());
+    }
+
+    /** @test */
+    public function will_default_sort_model_specific_available_statuses_by_order_desc(): void
+    {
+        Status::factory()->create(['model' => DataModel::class, 'order'=> 1]);
+        Status::factory()->create(['model' => DataModel::class, 'order'=> 2]);
+        Status::factory()->create(['model' => DataModel::class, 'order'=> 0]);
+        Status::factory()->create(['order'=> 3]);
+
+        $this->assertEquals([4,2,1,3], DataModel::availableStatuses('desc')->pluck('id')->toArray());
+    }
+
+    /** @test */
+    public function will_default_sort_model_specific_default_status_with_non_model_default_created_before(): void
+    {
+        Status::factory()->create([ 'order'=> 1, 'is_default' => true]);
+        $modelDefault = Status::factory()->create(['model' => DataModel::class, 'order'=> 1, 'is_default' => true]);
+
+        $this->assertEquals($modelDefault->id, DataModel::defaultStatus()->id);
+    }
+
+    /** @test */
+    public function will_default_sort_model_specific_default_status_with_non_model_default_created_after(): void
+    {
+        $modelDefault = Status::factory()->create(['model' => DataModel::class, 'order'=> 1, 'is_default' => true]);
+        Status::factory()->create([ 'order'=> 1, 'is_default' => true]);
+
+        $this->assertEquals($modelDefault->id, DataModel::defaultStatus()->id);
     }
 }

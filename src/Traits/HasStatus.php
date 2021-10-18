@@ -26,9 +26,12 @@ trait HasStatus
         return $this->status_updates()->orderBy('sequence_id', 'desc')->first();
     }
 
-    public static function availableStatuses(): Collection
+    public static function availableStatuses(string $orderFieldSort = null): Collection
     {
         return Status::query()
+            ->when($orderFieldSort, function ($q) use ($orderFieldSort) {
+                return $q->orderBy('order', $orderFieldSort);
+            })
             ->where(function ($q) {
                 return $q->whereNull('model')
                     ->orWhere('model', self::class);
@@ -44,6 +47,7 @@ trait HasStatus
                     ->orWhere('model', self::class);
             })->active()
             ->default()
+            ->orderBy('model', 'desc')
             ->first();
 
         return $defaultStatus;

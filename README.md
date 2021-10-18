@@ -1,9 +1,13 @@
 # Snow Penguin Studios - Laravel Model Status
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/snowpenguinstudios/laravel-model-status.svg?style=flat-square)](https://packagist.org/packages/snowpenguinstudios/laravel-model-status)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/snowpenguinstudios/laravel-model-status/run-tests?label=tests)](https://github.com/snowpenguinstudios/laravel-model-status/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/snowpenguinstudios/laravel-model-status/Check%20&%20fix%20styling?label=code%20style)](https://github.com/snowpenguinstudios/laravel-model-status/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/snowpenguinstudios/laravel-model-status.svg?style=flat-square)](https://packagist.org/packages/snowpenguinstudios/laravel-model-status)
+[![Latest Version on Packagist](https://badgen.net/packagist/v/snowpenguinstudios/laravel-model-status)](https://packagist.org/packages/snowpenguinstudios/laravel-model-status)
+[![Total Downloads](https://badgen.net/packagist/dt/snowpenguinstudios/laravel-model-status?color=blue)](https://packagist.org/packages/snowpenguinstudios/laravel-model-status)
+[![Package Contributors](https://img.shields.io/github/contributors/snowpenguinstudios/laravel-model-status?color=blue)](../../contributors)
+[![Package License](https://badgen.net/github/license/snowpenguinstudios/laravel-model-status)](License.md)
+
+[![GitHub Tests Action Status](https://badgen.net/github/checks/snowpenguinstudios/laravel-model-status/master/test?label=tests)](https://github.com/snowpenguinstudios/laravel-model-status/actions?query=workflow%3Arun-tests+branch%3Amaster)
+[![GitHub Code Style Action Status](https://badgen.net/github/checks/snowpenguinstudios/laravel-model-status/master?label=code%20style)](https://github.com/snowpenguinstudios/laravel-model-status/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amaster)
+![Package Last Commit](https://badgen.net/github/last-commit/snowpenguinstudios/laravel-model-status)
 
 ---
 
@@ -66,7 +70,9 @@ class ModelName extends Model {
 
 ## Usage
 
-### Working with the Status model
+### Working With The Status Model
+The following attributes are allowed to be set for mass assignment:
+`model`, `name`, `description`, `is_default`, `is_active` and `order`.
 
 Creating a global status:
 ```php
@@ -87,7 +93,7 @@ $status = Status::create([
 ]);
 ```
 
-### Assigning Status to model
+### Assigning Status To Model
 ```php
 ...
 $model->status_id = $status->id;
@@ -104,7 +110,46 @@ $model->update([
 ]);
 ```
 
-### Getting Model status information
+### Getting a Models Available Statuses
+
+Provides an array of all statuses (including the statues not assigned to a model) available for a model:
+```php
+$availableStatuses = DataModdel::availableStatuses();
+```
+
+Provides the default status for a model (note that if a Model specific and non-model specific status has a default, the model specific will be default):
+```php
+$defaultStatus = DataModdel::defaultStatus();
+```
+
+### The ability to sort by the Status Order
+
+Default Order will be in ascending order:
+```php
+$orderedStatuses = Status::order()->get();
+```
+
+Order by order field, ascending.
+```php
+$orderedStatuses = Status::order('asc')->get();
+```
+
+Order by order field, descending.
+```php
+$orderedStatuses = Status::order('desc')->get();
+```
+
+Order By a certain Model
+```php
+    $orderedStatuses = Status::where('model', DataModel::class)->order()->get();
+```
+**OR**
+```php
+    $orderedAscStatuses = DataModel::availableStatuses('asc');
+    $orderedDescStatuses = DataModel::availableStatuses('desc');
+```
+
+### Getting Model Status Information
 
 Getting the model's current status
 ```php
@@ -115,7 +160,7 @@ $model->status;
 Getting the model's status updates
 ```php
 $model->status_updates;
-// Returns an Collection of status update model 
+// Returns a Collection of status update model 
 ```
 
 Getting the model's latest status updates
