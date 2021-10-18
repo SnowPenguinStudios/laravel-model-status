@@ -157,7 +157,6 @@ class HasStatusTraitTest extends TestCase
         $this->assertEquals($status->id, $dataModel->latestStatusUpdate()->status_id);
     }
 
-
     /** @test */
     public function will_default_sort_model_specific_available_statuses_by_id(): void
     {
@@ -170,10 +169,10 @@ class HasStatusTraitTest extends TestCase
     /** @test */
     public function will_default_sort_model_specific_available_statuses_by_order_asc(): void
     {
-        Status::factory()->create(['model' => DataModel::class, 'order'=> 1]);
-        Status::factory()->create(['model' => DataModel::class, 'order'=> 2]);
-        Status::factory()->create(['model' => DataModel::class, 'order'=> 0]);
-        Status::factory()->create(['order'=> 3]);
+        Status::factory()->create(['model' => DataModel::class, 'order' => 1]);
+        Status::factory()->create(['model' => DataModel::class, 'order' => 2]);
+        Status::factory()->create(['model' => DataModel::class, 'order' => 0]);
+        Status::factory()->create(['order' => 3]);
 
         $this->assertEquals([3,1,2,4], DataModel::availableStatuses('asc')->pluck('id')->toArray());
     }
@@ -181,10 +180,10 @@ class HasStatusTraitTest extends TestCase
     /** @test */
     public function will_default_sort_model_specific_available_statuses_by_order_desc(): void
     {
-        Status::factory()->create(['model' => DataModel::class, 'order'=> 1]);
-        Status::factory()->create(['model' => DataModel::class, 'order'=> 2]);
-        Status::factory()->create(['model' => DataModel::class, 'order'=> 0]);
-        Status::factory()->create(['order'=> 3]);
+        Status::factory()->create(['model' => DataModel::class, 'order' => 1]);
+        Status::factory()->create(['model' => DataModel::class, 'order' => 2]);
+        Status::factory()->create(['model' => DataModel::class, 'order' => 0]);
+        Status::factory()->create(['order' => 3]);
 
         $this->assertEquals([4,2,1,3], DataModel::availableStatuses('desc')->pluck('id')->toArray());
     }
@@ -192,8 +191,8 @@ class HasStatusTraitTest extends TestCase
     /** @test */
     public function will_default_sort_model_specific_default_status_with_non_model_default_created_before(): void
     {
-        Status::factory()->create([ 'order'=> 1, 'is_default' => true]);
-        $modelDefault = Status::factory()->create(['model' => DataModel::class, 'order'=> 1, 'is_default' => true]);
+        Status::factory()->create([ 'order' => 1, 'is_default' => true]);
+        $modelDefault = Status::factory()->create(['model' => DataModel::class, 'order' => 1, 'is_default' => true]);
 
         $this->assertEquals($modelDefault->id, DataModel::defaultStatus()->id);
     }
@@ -201,8 +200,8 @@ class HasStatusTraitTest extends TestCase
     /** @test */
     public function will_default_sort_model_specific_default_status_with_non_model_default_created_after(): void
     {
-        $modelDefault = Status::factory()->create(['model' => DataModel::class, 'order'=> 1, 'is_default' => true]);
-        Status::factory()->create([ 'order'=> 1, 'is_default' => true]);
+        $modelDefault = Status::factory()->create(['model' => DataModel::class, 'order' => 1, 'is_default' => true]);
+        Status::factory()->create([ 'order' => 1, 'is_default' => true]);
 
         $this->assertEquals($modelDefault->id, DataModel::defaultStatus()->id);
     }

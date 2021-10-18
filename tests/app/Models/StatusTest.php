@@ -85,7 +85,7 @@ class StatusTest extends TestCase
             'description' => 'Descriptions',
             'is_default' => false,
             'is_active' => true,
-            'order' => 1
+            'order' => 1,
         ]);
 
         $status = Status::create($data->toArray());
@@ -102,7 +102,7 @@ class StatusTest extends TestCase
             'description' => 'Descriptions',
             'is_default' => false,
             'is_active' => true,
-            'order' => 1
+            'order' => 1,
         ]);
 
         $status->update($data->toArray());
